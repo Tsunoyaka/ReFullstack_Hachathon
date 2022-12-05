@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 
 from .serializers import HotelListSerializer, HotelCreateSerializer, HotelSerializer
 from .models import Hotel
@@ -22,7 +23,7 @@ class PriceFilter(rest_filter.FilterSet):
 
 
 
-
+@swagger_auto_schema(Hotel)
 class HotelListViewSet(ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelListSerializer

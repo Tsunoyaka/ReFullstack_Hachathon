@@ -11,7 +11,7 @@ from decouple import config
 class HotelListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hotel
-        fields = ('title', 'stars', 'region', 'desc_list', 'image', 'slug')
+        fields = ('user','title', 'stars', 'region', 'desc_list', 'image', 'slug')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

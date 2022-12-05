@@ -28,8 +28,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool, default=False)
 
-# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
+
 
 # Application definition
 
@@ -201,7 +201,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL = 'redis://127.0.0.1'
 CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
 
 CORS_ORIGIN_ALLOW_ALL = True
