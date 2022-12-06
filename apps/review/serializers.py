@@ -6,6 +6,14 @@ from .models import Comment, Dislike, Like
 from django.db.models import Avg
 
 
+class CommentSerializerSet(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(default=serializers.CurrentUserDefault(), source='user.username')
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(default=serializers.CurrentUserDefault(), source='user.username')
 
@@ -128,7 +136,8 @@ class DislikeSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault(),
         source='user.username'
     )
-
+    comment = serializers.HiddenField(default=CurrentPostDefault())
+    
     class Meta:
         model = Dislike
         fields = '__all__'

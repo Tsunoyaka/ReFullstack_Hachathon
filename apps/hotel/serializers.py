@@ -79,6 +79,20 @@ class HotelCreateSerializer(serializers.ModelSerializer):
         model = Hotel
         fields = '__all__'
 
+    def update(self, instance: Hotel, validated_data):
+        instance.title = validated_data.get('title', instance.title) 
+        instance.stars = validated_data.get('stars', instance.stars)
+        instance.desc = validated_data.get('desc', instance.desc)
+        instance.desc_list = validated_data.get('desc_list', instance.desc_list)
+        instance.pets = validated_data.get('pets', instance.pets)
+        instance.food = validated_data.get('location', instance.food)
+        instance.image = validated_data.get('image', instance.image) 
+        instance.region = validated_data.get('region', instance.region)
+        instance.save()
+        return instance
+
+
+
     # def create(self, validated_data):
     #     carousel_images = validated_data.pop('carousel_img')
     #     hotel = Hotel.objects.create(**validated_data) 
@@ -87,4 +101,37 @@ class HotelCreateSerializer(serializers.ModelSerializer):
     #         images.append(HotelImage(hotel=hotel, image=image))
     #     HotelImage.objects.bulk_create(images)
     #     return hotel
+
+
+class HotelUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(
+        default=serializers.CurrentUserDefault(),
+        source='user.username'
+    )
+    # carousel_img = serializers.ListField(
+    #     child=serializers.FileField(),
+    #     write_only=True
+    # )
+    def validate(self, attrs):
+        user = self.context['request'].user
+        attrs['user'] = user
+        return attrs
+
+    class Meta:
+        model = Hotel
+        fields = '__all__'
+
+    def update(self, instance: Hotel, validated_data):
+        # instance.user = validated_data.get('user')
+        instance.title = validated_data.get('title', instance.title) 
+        instance.stars = validated_data.get('stars', instance.stars)
+        instance.desc = validated_data.get('desc', instance.desc)
+        instance.desc_list = validated_data.get('desc_list', instance.desc_list)
+        instance.pets = validated_data.get('pets', instance.pets)
+        instance.food = validated_data.get('location', instance.food)
+        instance.image = validated_data.get('image', instance.image) 
+        instance.region = validated_data.get('region', instance.region)
+        instance.save()
+        return instance
+
 

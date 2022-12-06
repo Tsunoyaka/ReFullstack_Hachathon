@@ -9,9 +9,11 @@ from django.views.decorators.vary import vary_on_cookie
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 
-from .serializers import HotelListSerializer, HotelCreateSerializer, HotelSerializer
+from .serializers import HotelListSerializer, HotelCreateSerializer, HotelSerializer, HotelUpdateSerializer
 from .models import Hotel
 from .permissions import IsOwner
+
+from rest_framework.views import APIView
 
 class PriceFilter(rest_filter.FilterSet):
     max_price = rest_filter.NumberFilter(field_name="room_manager__room_price", lookup_expr='lt')
@@ -23,7 +25,6 @@ class PriceFilter(rest_filter.FilterSet):
 
 
 
-@swagger_auto_schema(Hotel)
 class HotelListViewSet(ModelViewSet):
     queryset = Hotel.objects.all()
     serializer_class = HotelListSerializer
@@ -36,6 +37,17 @@ class HotelListViewSet(ModelViewSet):
     ordering_fields = ['room_manager__room_price']
     range_fields = ['room_manager__room_price']
     filterset_class = PriceFilter
+
+
+    def partial_update(self, request, pk):
+        try:
+            instance = Hotel.objects.get(pk=pk)
+            serailizer = HotelCreateSerializer(data=request.data, instance=instance, context={'request': request})
+            if serailizer.is_valid(raise_exception=True):            
+                serailizer.save()  
+            return Response('Отель успешно изменен')
+        except Hotel.DoesNotExist:
+            return Response('Страница не найдена!', status=status.HTTP_404_NOT_FOUND)
 
 
     def list(self, request, *args, **kwargs):
@@ -61,3 +73,19 @@ class HotelListViewSet(ModelViewSet):
         if self.action in ['destroy', 'update', 'partial_update']:
             self.permission_classes = [IsOwner]
         return super().get_permissions()
+
+
+@swagger_auto_schema(HotelUpdateSerializer)
+class UpdHotelView(APIView):
+    permission_classes = [IsAdminUser, IsOwner]
+    
+    def put(self, request, pk):
+        # print(pk, type(pk))
+        obj = Hotel.objects.get(slug=pk)
+        serializer = HotelUpdateSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.update(obj, serializer.validated_data)
+            answer = {"status": "UPDATE" }
+            answer.update(serializer.data)
+            return Response(answer)
+

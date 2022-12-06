@@ -56,8 +56,6 @@ class Hotel(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title + get_time())
-        else:
-            self.slug = slugify(self.title + get_time())
         super().save(*args, **kwargs)
 
     class Meta:
