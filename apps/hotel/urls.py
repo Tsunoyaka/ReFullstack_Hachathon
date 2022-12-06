@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import HotelListViewSet, UpdHotelView
+from .views import HotelListViewSet, UpdHotelView, MyAddHotelView
 
 
 router = DefaultRouter()
@@ -11,7 +11,7 @@ router.register('hotels', HotelListViewSet, 'hotel')
 
 
 urlpatterns = [
-    # path('update/<str:pk>/', UpdHotelView.as_view(), name='hotel')
+    path('my-hotel/', MyAddHotelView.as_view(), name='my_hotel')
 ]
 
 # urlpatterns = [

@@ -91,3 +91,20 @@ class UpdHotelView(APIView):
                 answer = {"status": "UPDATE" }
                 answer.update(serializer.data)
                 return Response(answer)
+
+
+class MyAddHotelView(APIView):
+    @method_decorator(cache_page(60*15))
+    @method_decorator(vary_on_cookie)
+    def get(self, request):
+        list_=[]
+        for i in Hotel.objects.all():
+            if i.user == request.user:
+                list_.append({
+                    'user': str(request.user),
+                    'my_hotel':i.title,
+                    'region': i.region,
+                    'desc_list': i.desc_list,
+                    'image': 'http://127.0.0.1:8000/media/'+str(i.image)
+                    })
+        return Response(list_)
