@@ -8,7 +8,7 @@ User = get_user_model()
 
 class Hotel(models.Model):
     user = models.ForeignKey(
-        verbose_name='manager',
+        verbose_name='Менеджер',
         to=User,
         on_delete=models.CASCADE,
         related_name='manager'

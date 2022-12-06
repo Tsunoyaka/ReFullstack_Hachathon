@@ -24,4 +24,8 @@ class Booking(models.Model):
     def charge(self) -> float:
         return self.is_checkout* \
         (self.checkout_date - self.checkin_date + timedelta(1)).days* \
-        self.room.price
+        self.room.room_price
+
+    class Meta:
+        verbose_name = 'Бронирование'
+        verbose_name_plural = 'Бронирование'

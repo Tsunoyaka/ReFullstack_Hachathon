@@ -24,7 +24,7 @@ class RegistrationView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(
-                'Thanks for registration! Activate your account via link in your mail',
+                'Спасибо за регистрацию! Ссылка для активации учетной записи отправлена Вам на почту.',
                 status=status.HTTP_201_CREATED
             )
 
@@ -33,14 +33,14 @@ class AccountActivationView(APIView):
         user = User.objects.filter(activation_code=activation_code).first()
         if not user:
             return Response(
-                'PaGenrege not found', 
+                'Страница не найдена...', 
                 status=status.HTTP_404_NOT_FOUND
                 )
         user.is_active = True
         user.activation_code = ''
         user.save()
         return Response(
-            'Account activated! You can login now', 
+            'Учетная запись активирована! Теперь Вы можете войти на Booking.com', 
             status=status.HTTP_200_OK
             )
 
@@ -53,7 +53,7 @@ class ChangePasswordView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.set_new_password()
             return Response(
-                'Password changed succesfully',
+                'Ваш пароль успешно изменен.',
                 status=status.HTTP_200_OK
             )
 
@@ -64,7 +64,7 @@ class RestorePasswordView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.send_code()
             return Response(
-                'Code was sent to your email',
+                'Код для восстановления пароля был отправлен Вам на почту.',
                 status=status.HTTP_200_OK
             )
 
@@ -75,7 +75,7 @@ class SetRestoredPasswordView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.set_new_password()
             return Response(
-                'Password restored successfully',
+                'Ваш пароль успешно восстановлен.',
                 status=status.HTTP_200_OK
             )
 
@@ -87,7 +87,7 @@ class DeleteAccountView(APIView):
         username = request.user.username
         User.objects.get(username=username).delete()
         return Response(
-            'Account deleted successfully',
+            'Учетная запись удалена.',
             status=status.HTTP_204_NO_CONTENT
         )
 

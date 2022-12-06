@@ -20,3 +20,6 @@ class Favorites(models.Model):
     def __str__(self) -> str:
         return f'Hotel {self.hotel.title}'
 
+    class Meta:
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранные'

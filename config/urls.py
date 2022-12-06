@@ -43,7 +43,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('apps.account.urls')),
     path('hotel/', include('apps.hotel.urls')),
-    # path('booking/', include('apps.booking.urls')),
+    path('booking/', include('apps.booking.urls')),
     path('room/', include('apps.room.urls')),
     path('comment/', include('apps.review.urls')),
     path('favorites/', include('apps.favorites.urls')),
