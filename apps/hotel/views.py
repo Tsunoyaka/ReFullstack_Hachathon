@@ -38,7 +38,6 @@ class HotelListViewSet(ModelViewSet):
     range_fields = ['room_manager__room_price']
     filterset_class = PriceFilter
 
-
     def partial_update(self, request, pk):
         try:
             instance = Hotel.objects.get(pk=pk)

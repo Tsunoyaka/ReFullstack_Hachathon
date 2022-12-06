@@ -23,8 +23,8 @@ class Migration(migrations.Migration):
                 ('activation_code', models.CharField(blank=True, max_length=8)),
             ],
             options={
-                'verbose_name': 'User',
-                'verbose_name_plural': 'Users',
+                'verbose_name': 'Пользователь',
+                'verbose_name_plural': 'Пользователи',
             },
         ),
     ]

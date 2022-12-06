@@ -134,4 +134,3 @@ class HotelUpdateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-

@@ -93,6 +93,10 @@ class Like(models.Model):
     def __str__(self) -> str:
         return f'Liked by {self.user.username}'
 
+    class Meta:
+        verbose_name = 'Нравится'
+        verbose_name_plural = 'Нравится'
+
 
 class Dislike(models.Model):
     user = models.ForeignKey(
@@ -108,3 +112,7 @@ class Dislike(models.Model):
 
     def __str__(self) -> str:
         return f'Dislike by {self.user.username}'
+
+    class Meta:
+        verbose_name = 'Не нравится'
+        verbose_name_plural = 'Не нравится'

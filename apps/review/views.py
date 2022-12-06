@@ -19,7 +19,10 @@ class CommentViewSet(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializerSet
 
-
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context  
 
 
 # class CreateCommentView(APIView):
@@ -64,14 +67,14 @@ class LikeView(APIView):
         serializer = LikeSerializer(data=request.data,  context={'request': request, 'pk': pk})
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
-            return Response('Liked!')
+            return Response('Вы поставили отметку "Нравится!"')
 
     @swagger_auto_schema(request_body=LikeSerializer)
     def delete(self, request, pk):
         serializer = LikeSerializer(data=request.data,  context={'request': request, 'pk': pk})
         if serializer.is_valid(raise_exception=True):
             serializer.unlike()
-            return Response('Unliked!')
+            return Response('Вы убрали отметку "Нравится!"')
 
 
 class DislikeView(APIView):
@@ -82,12 +85,12 @@ class DislikeView(APIView):
         serializer = DislikeSerializer(data=request.data,  context={'request': request, 'pk': pk})
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
-            return Response('Disiked!')
+            return Response('Вы поставили отметку "Не нравится!"')
 
     @swagger_auto_schema(request_body=DislikeSerializer)
     def delete(self, request, pk):
         serializer = DislikeSerializer(data=request.data,  context={'request': request, 'pk': pk})
         if serializer.is_valid(raise_exception=True):
             serializer.undislike()
-            return Response('Undisliked!')
+            return Response('Вы убрали отметку "Не нравится!"')
 

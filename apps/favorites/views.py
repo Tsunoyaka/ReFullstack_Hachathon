@@ -20,7 +20,7 @@ class FavoritesView(APIView):
         serializer = FavoritesSerializer(data=request.data,  context={'request': request})
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
-            return Response('Favorites!')
+            return Response('Добавлено в избранные!')
 
     # def delete(self, request):
     #     serializer = FavoritesSerializer(data=request.data)
