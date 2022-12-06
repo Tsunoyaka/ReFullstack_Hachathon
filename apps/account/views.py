@@ -1,20 +1,58 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from django.contrib.auth import get_user_model
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
 from .serializers import (
     UserRegistrationSerializer, 
     PasswordChangeSerializer,
     RestorePasswordSerializer,
-    SetRestoredPasswordSerializer
+    SetRestoredPasswordSerializer,
+    UsersSerializer
     )
 
 
 User = get_user_model()
+
+
+
+
+class UserView(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    * Only admin users are able to access this view.
+    """
+    # authentication_classes = [authentication.TokenAuthentication]
+    # permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request, pk):
+        """
+        Return a list of all users.
+        """
+        user = User.objects.get(email=pk)
+        serializer = UsersSerializer(instance=user)
+        # # usernames = [user.username for user in User.objects.all()]
+        return Response(serializer.data)
+
+class ListUsersView(APIView):
+    def get(self, request):
+        usernames = User.objects.all()
+        list_ = []
+        for user in usernames:
+           B = {
+            'user': user.username,
+            'email': user.email 
+           }
+           list_.append(B)
+        return Response(list_)
+        # emails = [user.email for user in User.objects.all()]
 
 
 class RegistrationView(APIView):

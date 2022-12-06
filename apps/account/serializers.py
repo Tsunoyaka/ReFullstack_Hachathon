@@ -17,6 +17,11 @@ def email_validator(email):
         return email
 
 
+class UsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email')  
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(max_length=128, required=True)
 
