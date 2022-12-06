@@ -79,12 +79,15 @@ class UpdHotelView(APIView):
     permission_classes = [IsAdminUser, IsOwner]
     
     def put(self, request, pk):
-        # print(pk, type(pk))
-        obj = Hotel.objects.get(slug=pk)
-        serializer = HotelUpdateSerializer(data=request.data, context={'request': request})
-        if serializer.is_valid(raise_exception=True):
-            serializer.update(obj, serializer.validated_data)
-            answer = {"status": "UPDATE" }
-            answer.update(serializer.data)
-            return Response(answer)
-
+            try:
+                obj = Hotel.objects.get(slug=pk)
+            except:
+                return Response('Отель с таким первичным ключем отсутствует.',
+                status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = HotelUpdateSerializer(data=request.data, context={'request': request})
+            if serializer.is_valid(raise_exception=True):
+                serializer.update(obj, serializer.validated_data)
+                answer = {"status": "UPDATE" }
+                answer.update(serializer.data)
+                return Response(answer)

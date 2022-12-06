@@ -23,23 +23,15 @@ User = get_user_model()
 
 
 class UserView(APIView):
-    """
-    View to list all users in the system.
-
-    * Requires token authentication.
-    * Only admin users are able to access this view.
-    """
-    # authentication_classes = [authentication.TokenAuthentication]
-    # permission_classes = [permissions.IsAdminUser]
-
     def get(self, request, pk):
-        """
-        Return a list of all users.
-        """
-        user = User.objects.get(email=pk)
-        serializer = UsersSerializer(instance=user)
-        # # usernames = [user.username for user in User.objects.all()]
-        return Response(serializer.data)
+            try:
+                user = User.objects.get(email=pk)
+            except:
+                return Response('Пользователя под таким первичным ключём не существует.',
+                status=status.HTTP_404_NOT_FOUND)
+            serializer = UsersSerializer(instance=user)
+            # # usernames = [user.username for user in User.objects.all()]
+            return Response(serializer.data)
 
 class ListUsersView(APIView):
     def get(self, request):
@@ -52,7 +44,7 @@ class ListUsersView(APIView):
            }
            list_.append(B)
         return Response(list_)
-        # emails = [user.email for user in User.objects.all()]
+        
 
 
 class RegistrationView(APIView):
