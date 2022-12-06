@@ -52,8 +52,8 @@ class LikeView(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     @swagger_auto_schema(request_body=LikeSerializer)
-    def post(self, request):
-        serializer = LikeSerializer(data=request.data,  context={'request': request})
+    def post(self, request, pk):
+        serializer = LikeSerializer(data=request.data,  context={'request': request, 'pk': pk})
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
             return Response('Liked!')

@@ -37,8 +37,7 @@ class HotelListViewSet(ModelViewSet):
     range_fields = ['room_manager__room_price']
     filterset_class = PriceFilter
 
-    @method_decorator(cache_page(60*15 * 2))
-    @method_decorator(vary_on_cookie)
+
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
         

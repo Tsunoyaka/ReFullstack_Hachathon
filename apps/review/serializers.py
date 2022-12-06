@@ -1,3 +1,4 @@
+from email.policy import default
 from rest_framework import serializers
 
 from apps.hotel.models import Hotel
@@ -75,7 +76,17 @@ class CommentDelUpdSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-       
+
+class CurrentPostDefault:
+    requires_context = True
+
+    def __call__(self, serializer_field):
+        try:
+            test_ = serializer_field.context['pk']  
+            com = Comment.objects.get(pk=test_)
+            return com
+        except:
+            raise serializers.ValidationError('Комментария не существует')
 
 
 class LikeSerializer(serializers.ModelSerializer):
@@ -84,11 +95,14 @@ class LikeSerializer(serializers.ModelSerializer):
         source='user.username'
     )
 
+    comment = serializers.HiddenField(default=CurrentPostDefault())
+
     class Meta:
         model = Like
         fields = '__all__'
 
     def create(self, validated_data):
+        # validated_data['comment'] = Comment.objects.get(pk=5)
         comment = self.context.get('request').data.get('comment')
         user = self.context.get('request').user
         dislike = Dislike.objects.filter(user=user, comment=comment).first()
